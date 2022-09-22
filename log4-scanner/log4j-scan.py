@@ -31,6 +31,7 @@ try:
 except Exception:
     pass
 
+dns_call_back_list =[]
 
 cprint('[•] CVE-2021-44228 - Apache Log4j RCE Scanner', "green")
 cprint('[•] Scanner provided by FullHunt.io - The Next-Gen Attack Surface Management Platform.', "yellow")
@@ -429,6 +430,7 @@ def get_dns_callback_domain():
     else:
         raise ValueError("Invalid DNS Callback provider")
     dns_callback_host = dns_callback.domain
+    dns_call_back_list.append(dns_callback)
     return dns_callback_host
 
 def main():
@@ -474,11 +476,12 @@ def main():
     while True:
         if time.time() > timeout:
             break
-        records = dns_callback.pull_logs()
-        if len(records) != 0:
-            cprint("[!!!] Targets Affected", "yellow")
-            for i in records:
-                cprint(json.dumps(i), "yellow")
+        for dns_callback in dns_call_back_list:
+            records = dns_callback.pull_logs()
+            if len(records) != 0:
+                cprint("[!!!] Targets Affected", "yellow")
+                for i in records:
+                    cprint(json.dumps(i), "yellow")
         '''
         if len(records) == 0:
             cprint("[•] Targets do not seem to be vulnerable.", "green")
