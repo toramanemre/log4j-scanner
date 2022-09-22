@@ -446,7 +446,11 @@ def main():
 
     cprint("[•] Payloads sent to all URLs. Waiting for DNS OOB callbacks.", "cyan")
     cprint("[•] Waiting...", "cyan")
-    time.sleep(int(args.wait_time))
+    #time.sleep(int(args.wait_time))
+    timeout = time.time() + int(args.wait_time)
+    while True:
+        if time.time() > timeout:
+            break
     records = dns_callback.pull_logs()
     if len(records) == 0:
         cprint("[•] Targets do not seem to be vulnerable.", "green")
@@ -454,6 +458,7 @@ def main():
         cprint("[!!!] Targets Affected", "yellow")
         for i in records:
             cprint(json.dumps(i), "yellow")
+    time.sleep(30)
 
 
 if __name__ == "__main__":
