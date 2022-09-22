@@ -138,6 +138,16 @@ parser.add_argument("--custom-dns-callback-host",
                     dest="custom_dns_callback_host",
                     help="Custom DNS Callback Host.",
                     action='store')
+parser.add_argument("--dns-callback-server",
+                    dest="dns_callback_server",
+                    help="Custom DNS Callback Server.",
+                    default="interact.sh",
+                    action='store')
+parser.add_argument("--dns-callback-server-token",
+                    dest="dns_callback_server_token",
+                    help="Custom DNS Callback Token.",
+                    default="",
+                    action='store')
 parser.add_argument("--disable-http-redirects",
                     dest="disable_redirects",
                     help="Disable HTTP redirects. Note: HTTP redirects are useful as it allows the payloads to have a higher chance of reaching vulnerable systems.",
@@ -430,7 +440,8 @@ def main():
         if args.dns_callback_provider == "interact.sh":
             dns_callback = Interactsh()
         if args.dns_callback_provider == "mrtrmn.xyz":
-            dns_callback = MrtrmnXyz()
+            if args.dns_callback_server:
+                dns_callback = MrtrmnXyz(args.dns_callback_server_token,args.dns_callback_server)
         else:
             raise ValueError("Invalid DNS Callback provider")
         dns_callback_host = dns_callback.domain
