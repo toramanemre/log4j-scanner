@@ -485,7 +485,7 @@ def main():
                 cprint("[!!!] Targets Affected", "yellow")
                 for i in records:
                     cprint(json.dumps(i), "yellow")
-        print(domain_url_dict)
+                
         '''
         if len(records) == 0:
             cprint("[•] Targets do not seem to be vulnerable.", "green")
@@ -497,6 +497,7 @@ def main():
         time.sleep(1)
         records = ""
 
+    print(domain_url_dict)
 
 if __name__ == "__main__":
     try:
