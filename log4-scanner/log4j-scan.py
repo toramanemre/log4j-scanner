@@ -451,14 +451,21 @@ def main():
     while True:
         if time.time() > timeout:
             break
-    records = dns_callback.pull_logs()
-    if len(records) == 0:
-        cprint("[•] Targets do not seem to be vulnerable.", "green")
-    else:
-        cprint("[!!!] Targets Affected", "yellow")
-        for i in records:
-            cprint(json.dumps(i), "yellow")
-    time.sleep(30)
+        records = dns_callback.pull_logs()
+        if len(records) != 0:
+            cprint("[!!!] Targets Affected", "yellow")
+            for i in records:
+                cprint(json.dumps(i), "yellow")
+        '''
+        if len(records) == 0:
+            cprint("[•] Targets do not seem to be vulnerable.", "green")
+        else:
+            cprint("[!!!] Targets Affected", "yellow")
+            for i in records:
+                cprint(json.dumps(i), "yellow")
+        '''
+        time.sleep(1)
+        records = ""
 
 
 if __name__ == "__main__":
