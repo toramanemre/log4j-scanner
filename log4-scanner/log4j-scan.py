@@ -418,6 +418,18 @@ def scan_url(url, callback_host):
             except Exception as e:
                 cprint(f"EXCEPTION: {e}")
 
+def get_dns_callback_domain():
+    dns_callback_host = ""
+    cprint(f"[•] Initiating DNS callback server ({args.dns_callback_provider}).")
+    if args.dns_callback_provider == "interact.sh":
+        dns_callback = Interactsh()
+    if args.dns_callback_provider == "mrtrmn.xyz":
+        if args.dns_callback_server:
+            dns_callback = MrtrmnXyz(args.dns_callback_server_token,args.dns_callback_server)
+    else:
+        raise ValueError("Invalid DNS Callback provider")
+    dns_callback_host = dns_callback.domain
+    return dns_callback_host
 
 def main():
     urls = []
@@ -449,7 +461,7 @@ def main():
     cprint("[%] Checking for Log4j RCE CVE-2021-44228.", "magenta")
     for url in urls:
         cprint(f"[•] URL: {url}", "magenta")
-        scan_url(url, dns_callback_host)
+        scan_url(url, get_dns_callback_domain())
 
     if args.custom_dns_callback_host:
         cprint("[•] Payloads sent to all URLs. Custom DNS Callback host is provided, please check your logs to verify the existence of the vulnerability. Exiting.", "cyan")
