@@ -9,6 +9,7 @@
 # ******************************************************************
 
 import argparse
+from dis import dis
 import random
 import requests
 import time
@@ -465,7 +466,8 @@ def main():
     for url in urls:
         cprint(f"[•] URL: {url}", "magenta")
         callback_domain = get_dns_callback_domain()
-        domain_url_dict = {callback_domain : url}
+        scan_dict = {callback_domain : url}
+        domain_url_dict.update(scan_dict)
         scan_url(url, callback_domain)
 
     if args.custom_dns_callback_host:
